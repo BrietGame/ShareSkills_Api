@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: shareskills_postgres
+    domainname: shareskills.alexisbriet.fr
+    image: postgres:14-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    networks:
+      - hubgamers-network
+    restart: always
+
+  spring-boot-app:
+    container_name: shareskills_api
+    domainname: shareskills.alexisbriet.fr
+    build:
+      context: docker
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - jwt.secret=${JWT_SECRET}
+      - spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+      - cloudinary_url=${CLOUDINARY_URL}
+      - stripe.apiKey=${STRIPE_API_KEY}
+      - stripe.webhook.secret=${STRIPE_WEBHOOK_SECRET}
+      - stripe.endpointSecret=${STRIPE_ENDPOINT_SECRET}
+      - stripe.domain=${STRIPE_DOMAIN}
+      - app.domain=${APP_DOMAIN}
+      - app.admin.email=${APP_ADMIN_EMAIL}
+      - app.admin.password=${APP_ADMIN_PASSWORD}
+      - app.admin.username=${APP_ADMIN_USERNAME}
+      - spring.datasource.url=${SPRING_DATASOURCE_URL}
+      - spring.datasource.username=${SPRING_DATASOURCE_USERNAME}
+      - spring.datasource.password=${SPRING_DATASOURCE_PASSWORD}
+      - spring.jpa.hibernate.ddl-auto=update
+      - spring.datasource.driver-class-name=org.postgresql.Driver
+      - spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+      - spring.liquibase.enabled=false
+      - fixtures.enabled=false
+    networks:
+      - hubgamers-network
+    restart: always
+
+networks:
+  hubgamers-network:
+    name: hubgamers-network
+    driver: bridge
