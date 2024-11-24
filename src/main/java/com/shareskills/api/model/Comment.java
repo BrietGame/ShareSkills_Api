@@ -30,5 +30,5 @@ public class Comment {
     private String content;
 
     @Column(name = "created_at")
-    private ZonedDateTime createdAt;
+    private ZonedDateTime createdAt = ZonedDateTime.now();
 }
