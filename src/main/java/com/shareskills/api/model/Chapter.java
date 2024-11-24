@@ -12,6 +12,7 @@ import java.util.List;
 public class Chapter {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

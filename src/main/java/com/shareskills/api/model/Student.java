@@ -1,9 +1,6 @@
 package com.shareskills.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
@@ -14,6 +11,7 @@ import java.time.ZonedDateTime;
 public class Student {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

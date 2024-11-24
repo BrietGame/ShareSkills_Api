@@ -12,6 +12,7 @@ import java.util.List;
 public class Formation {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 

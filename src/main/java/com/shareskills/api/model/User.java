@@ -1,12 +1,10 @@
 package com.shareskills.api.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -14,6 +12,7 @@ import java.time.ZonedDateTime;
 public class User {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
 
@@ -43,6 +42,15 @@ public class User {
 
     @Column(name = "avatar_url")
     private String avatarUrl;
+
+    @Column(name = "roles")
+    public List<Role> roles;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt = ZonedDateTime.now();

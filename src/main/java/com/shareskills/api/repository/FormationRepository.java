@@ -6,5 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface FormationRepository extends CrudRepository<Formation, Long> {
-    List<Formation> findByUserId(Long userId);
+    List<Formation> findByTeacherId(Long teacherId);
 }

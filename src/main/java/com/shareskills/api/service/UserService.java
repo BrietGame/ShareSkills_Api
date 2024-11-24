@@ -1,8 +1,12 @@
 package com.shareskills.api.service;
 
+//import com.cloudinary.utils.ObjectUtils;
+import com.shareskills.api.exception.BadRequestException;
+import com.shareskills.api.mapper.UserMapper;
 import com.shareskills.api.model.User;
+import com.shareskills.api.model.dto.UserDTO;
 import com.shareskills.api.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,18 +15,73 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    private final UserMapper userMapper = new UserMapper();
+
+    //@Autowired
+    //private FileService fileService;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public List<String> getAdminColumns() {
+        return userMapper.getAdminColumns();
     }
 
-    public List<User> findAll() {
+    public List<String> getColumns() {
+        return userMapper.getColumns();
+    }
+
+    public User getUserConnected() {
+        UserDetails userDetails = (UserDetails) org.springframework.security.core.context.SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+        Optional<User> user = userRepository.findByEmail(userDetails.getUsername());
+        if (user.isPresent()) {
+            return user.get();
+        } else {
+            throw new BadRequestException("User not found");
+        }
+    }
+
+    public List<User> getAllUsers() {
         return (List<User>) userRepository.findAll();
+    }
+
+    public User getUserById(String id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new BadRequestException("User not found");
+        }
+        return user.get();
+    }
+
+    public User getUserByUsername(String username) {
+        Optional<User> user = userRepository.findByEmail(username);
+        if (user.isEmpty()) {
+            throw new BadRequestException("User not found");
+        }
+        return user.get();
+    }
+
+    public User getUserByEmail(String email) {
+        Optional<User> user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            throw new BadRequestException("User not found");
+        }
+        return user.get();
+    }
+
+    public User createUser(UserDTO userDTO) {
+        return userRepository.save(userMapper.toEntity(userDTO));
+    }
+
+    public User updateUser(UserDTO userDTO) {
+        return userRepository.save(userMapper.toEntity(userDTO));
+    }
+
+    public void deleteUser(String id) {
+        userRepository.delete(getUserById(id));
     }
 }
