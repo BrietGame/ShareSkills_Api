@@ -6,6 +6,7 @@ import com.shareskills.api.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +22,10 @@ public class AdminUserController {
     @GetMapping("/list")
     public ResponseJson<List<User>> getUsers() {
         return new ResponseJson<>(userService.getAllUsers(), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseJson<User> getUserById(@PathVariable String id) {
+        return new ResponseJson<>(userService.getUserById(id), HttpStatus.OK.value());
     }
 }
