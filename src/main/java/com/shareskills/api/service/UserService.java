@@ -49,12 +49,8 @@ public class UserService {
         return (List<User>) userRepository.findAll();
     }
 
-    public User getUserById(String id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new BadRequestException("User not found");
-        }
-        return user.get();
+    public Optional<User> getUserById(String id) {
+        return userRepository.findById(id);
     }
 
     public User getUserByUsername(String username) {
@@ -82,6 +78,10 @@ public class UserService {
     }
 
     public void deleteUser(String id) {
-        userRepository.delete(getUserById(id));
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new BadRequestException("User not found");
+        }
+        userRepository.delete(optionalUser.get());
     }
 }

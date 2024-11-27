@@ -1,9 +1,12 @@
 package com.shareskills.api.response;
 
+import lombok.Getter;
+
+@Getter
 public class ResponseJson<T> {
     private T data;
     private String message;
-    private int statusCode;
+    private final int statusCode;
 
     private long exp;
 
@@ -27,19 +30,4 @@ public class ResponseJson<T> {
         this.statusCode = statusCode;
     }
 
-    public T getData() {
-        return data;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public long getExp() {
-        return exp;
-    }
 }

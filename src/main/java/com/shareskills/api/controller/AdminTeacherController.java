@@ -6,6 +6,7 @@ import com.shareskills.api.response.ResponseJson;
 import com.shareskills.api.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,38 +20,38 @@ public class AdminTeacherController {
     private TeacherService teacherService;
 
     @GetMapping("/list")
-    public ResponseJson<List<Teacher>> getTeachers() {
-        return new ResponseJson<>(teacherService.findAll(), HttpStatus.OK.value());
+    public ResponseEntity<ResponseJson<List<Teacher>>> getTeachers() {
+        return ResponseEntity.ok(new ResponseJson<>(teacherService.findAll(), HttpStatus.OK.value()));
     }
 
     @GetMapping("/{id}")
-    public ResponseJson<Teacher> getTeacherById(@PathVariable Long id) {
+    public ResponseEntity<ResponseJson<Teacher>> getTeacherById(@PathVariable Long id) {
         Optional<Teacher> teacher = teacherService.findById(id);
-        return teacher.map(value -> new ResponseJson<>(value, HttpStatus.OK.value())).orElseGet(() -> new ResponseJson<>(null, HttpStatus.NOT_FOUND.value()));
+        return teacher.map(value -> ResponseEntity.ok(new ResponseJson<>(value, HttpStatus.OK.value()))).orElseGet(() -> ResponseEntity.ok(new ResponseJson<>(null, HttpStatus.NOT_FOUND.value())));
     }
 
     @PostMapping("/create")
-    public ResponseJson<Teacher> createTeacher(@RequestBody TeacherDTO teacherDTO) {
-        return new ResponseJson<>(teacherService.createTeacher(teacherDTO), HttpStatus.CREATED.value());
+    public ResponseEntity<ResponseJson<Teacher>> createTeacher(@RequestBody TeacherDTO teacherDTO) {
+        return ResponseEntity.ok(new ResponseJson<>(teacherService.createTeacher(teacherDTO), HttpStatus.CREATED.value()));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseJson<Teacher> updateTeacher(@PathVariable Long id, @RequestBody TeacherDTO teacherDTO) {
+    public ResponseEntity<ResponseJson<Teacher>> updateTeacher(@PathVariable Long id, @RequestBody TeacherDTO teacherDTO) {
         Optional<Teacher> teacher = teacherService.findById(id);
         if (teacher.isPresent()) {
             teacherDTO.setId(id);
-            return new ResponseJson<>(teacherService.updateTeacher(teacherDTO), HttpStatus.OK.value());
+            return ResponseEntity.ok(new ResponseJson<>(teacherService.updateTeacher(teacherDTO), HttpStatus.OK.value()));
         }
-        return new ResponseJson<>(null, HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.ok(new ResponseJson<>(null, HttpStatus.NOT_FOUND.value()));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseJson<Teacher> deleteTeacher(@PathVariable Long id) {
+    public ResponseEntity<ResponseJson<Teacher>> deleteTeacher(@PathVariable Long id) {
         Optional<Teacher> teacher = teacherService.findById(id);
         if (teacher.isPresent()) {
             teacherService.deleteTeacher(teacher.get());
-            return new ResponseJson<>(null, HttpStatus.NO_CONTENT.value());
+            return ResponseEntity.ok(new ResponseJson<>(null, HttpStatus.NO_CONTENT.value()));
         }
-        return new ResponseJson<>(null, HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.ok(new ResponseJson<>(null, HttpStatus.NOT_FOUND.value()));
     }
 }

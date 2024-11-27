@@ -8,6 +8,7 @@ import com.shareskills.api.response.ResponseJson;
 import com.shareskills.api.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,37 +22,37 @@ public class AdminQuizController {
     private QuizService quizService;
 
     @GetMapping("/list")
-    public ResponseJson<List<Quiz>> getQuizzes() {
-        return new ResponseJson<>(quizService.findAll(), HttpStatus.OK.value());
+    public ResponseEntity<ResponseJson<List<Quiz>>> getQuizzes() {
+        return ResponseEntity.ok(new ResponseJson<>(quizService.findAll(), HttpStatus.OK.value()));
     }
 
     @GetMapping("/{id}")
-    public ResponseJson<Optional<Quiz>> getQuizById(Long id) {
-        return new ResponseJson<>(quizService.findById(id), HttpStatus.OK.value());
+    public ResponseEntity<ResponseJson<Optional<Quiz>>> getQuizById(Long id) {
+        return ResponseEntity.ok(new ResponseJson<>(quizService.findById(id), HttpStatus.OK.value()));
     }
 
     @PostMapping("/create")
-    public ResponseJson<Quiz> createQuiz(QuizDTO quizDTO) {
-        return new ResponseJson<>(quizService.createQuiz(quizDTO), HttpStatus.CREATED.value());
+    public ResponseEntity<ResponseJson<Quiz>> createQuiz(QuizDTO quizDTO) {
+        return ResponseEntity.ok(new ResponseJson<>(quizService.createQuiz(quizDTO), HttpStatus.CREATED.value()));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseJson<Quiz> updateFormation(@PathVariable Long id, @RequestBody QuizDTO quizDTO) {
+    public ResponseEntity<ResponseJson<Quiz>> updateFormation(@PathVariable Long id, @RequestBody QuizDTO quizDTO) {
         Optional<Quiz> formationOptional = quizService.findById(id);
         if (formationOptional.isPresent()) {
             quizDTO.setId(id);
-            return new ResponseJson<>(quizService.updateQuiz(quizDTO), HttpStatus.OK.value());
+            return ResponseEntity.ok(new ResponseJson<>(quizService.updateQuiz(quizDTO), HttpStatus.OK.value()));
         }
-        return new ResponseJson<>(null, HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.ok(new ResponseJson<>(null, HttpStatus.NOT_FOUND.value()));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseJson<Quiz> deleteFormation(@PathVariable Long id) {
+    public ResponseEntity<ResponseJson<Quiz>> deleteFormation(@PathVariable Long id) {
         Optional<Quiz> formation = quizService.findById(id);
         if (formation.isPresent()) {
             quizService.deleteQuiz(formation.get());
-            return new ResponseJson<>(null, HttpStatus.NO_CONTENT.value());
+            return ResponseEntity.ok(new ResponseJson<>(null, HttpStatus.NO_CONTENT.value()));
         }
-        return new ResponseJson<>(null, HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.ok(new ResponseJson<>(null, HttpStatus.NOT_FOUND.value()));
     }
 }
