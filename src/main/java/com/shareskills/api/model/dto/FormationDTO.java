@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 public class FormationDTO {
@@ -20,4 +22,6 @@ public class FormationDTO {
 
     @NotNull(message = "Le prix de la formation est requis")
     private Double price;
+
+    private List<Long> chapterIds;
 }

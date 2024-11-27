@@ -1,6 +1,7 @@
 package com.shareskills.api.service;
 
 import com.shareskills.api.mapper.FormationMapper;
+import com.shareskills.api.model.Chapter;
 import com.shareskills.api.model.Formation;
 import com.shareskills.api.model.dto.FormationDTO;
 import com.shareskills.api.repository.FormationRepository;
@@ -37,7 +38,14 @@ public class FormationService {
     }
 
     public Formation updateFormation(FormationDTO formationDTO) {
-        return formationRepository.save(formationMapper.toEntity(formationDTO));
+        Formation newFormation = formationMapper.toEntity(formationDTO);
+        newFormation.setTeacherId(userService.getUserConnected().getId());
+        return formationRepository.save(newFormation);
+    }
+
+    public void addChapterOnFormation(Chapter newChapter, Formation formation) {
+        formation.getChapters().add(newChapter);
+        formationRepository.save(formation);
     }
 
     public void deleteFormation(Formation formation) {

@@ -1,6 +1,7 @@
 package com.shareskills.api.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
@@ -21,6 +22,9 @@ public class Chapter {
 
     @Column(name = "video_url")
     private String videoUrl;
+
+    @Column(name = "order_item")
+    private Integer orderItem;
 
     @Column(name = "formation_id")
     private Long formationId;

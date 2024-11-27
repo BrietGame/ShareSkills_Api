@@ -1,6 +1,7 @@
 package com.shareskills.api.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,12 @@ public class ChapterDTO {
     @NotBlank(message = "La vidéo du chapitre est requise")
     private String videoUrl;
 
-    @NotBlank(message = "La durée du chapitre est requise")
+    @NotNull(message = "L'ordre du chapitre est requis")
+    private Integer orderItem;
+
+    @NotNull(message = "La formation du chapitre est requise")
+    private Long formationId;
+
+    @NotNull(message = "La durée du chapitre est requise")
     private Integer duration;
 }

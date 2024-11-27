@@ -4,6 +4,7 @@ import com.shareskills.api.model.Chapter;
 import com.shareskills.api.model.dto.ChapterDTO;
 import com.shareskills.api.response.ResponseJson;
 import com.shareskills.api.service.ChapterService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class AdminChapterController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseJson<Chapter>> createChapter(@RequestBody ChapterDTO chapterDTO) {
+    public ResponseEntity<ResponseJson<Chapter>> createChapter(@RequestBody @Valid ChapterDTO chapterDTO) {
         return ResponseEntity.ok(new ResponseJson<>(chapterService.createChapter(chapterDTO), HttpStatus.CREATED.value()));
     }
 
