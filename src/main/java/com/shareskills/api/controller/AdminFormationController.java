@@ -4,6 +4,7 @@ import com.shareskills.api.model.Formation;
 import com.shareskills.api.model.dto.FormationDTO;
 import com.shareskills.api.response.ResponseJson;
 import com.shareskills.api.service.FormationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class AdminFormationController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ResponseJson<Formation>> createFormation(@RequestBody FormationDTO formationDTO) {
+    public ResponseEntity<ResponseJson<Formation>> createFormation(@RequestBody @Valid FormationDTO formationDTO) {
         Formation formation = formationService.createFormation(formationDTO);
         ResponseJson<Formation> response = new ResponseJson<>(formation, HttpStatus.CREATED.value());
         return ResponseEntity.status(response.getStatusCode()).body(response);
