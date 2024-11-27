@@ -1,6 +1,7 @@
 package com.shareskills.api.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,6 @@ public class FormationDTO {
     private String videoPreviewUrl;
     private String summary;
 
-    @NotBlank(message = "Le prix de la formation est requis")
+    @NotNull(message = "Le prix de la formation est requis")
     private Double price;
 }

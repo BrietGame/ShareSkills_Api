@@ -19,6 +19,9 @@ public class FormationService {
     @Autowired
     private FormationMapper formationMapper;
 
+    @Autowired
+    private UserService userService;
+
     public Optional<Formation> findById(Long id) {
         return formationRepository.findById(id);
     }
@@ -28,7 +31,9 @@ public class FormationService {
     }
 
     public Formation createFormation(FormationDTO formationDTO) {
-        return formationRepository.save(formationMapper.toEntity(formationDTO));
+        Formation newFormation = formationMapper.toEntity(formationDTO);
+        newFormation.setTeacherId(userService.getUserConnected().getId());
+        return formationRepository.save(newFormation);
     }
 
     public Formation updateFormation(FormationDTO formationDTO) {

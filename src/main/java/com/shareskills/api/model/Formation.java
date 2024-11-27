@@ -55,6 +55,15 @@ public class Formation {
             inverseJoinColumns = @JoinColumn(name = "comment_id"))
     public List<Comment> comments;
 
+    @Enumerated(EnumType.STRING)
+    public FormationStatus status = FormationStatus.DRAFT;
+
+    public enum FormationStatus {
+        DRAFT,
+        PUBLISHED,
+        ARCHIVED
+    }
+
     @Column(name = "created_at")
     private ZonedDateTime createdAt = ZonedDateTime.now();
 
