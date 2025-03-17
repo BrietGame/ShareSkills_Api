@@ -17,6 +17,11 @@ export class UsersService {
     return this.userModel.findByIdAndUpdate(id, createUserDto, { new: true });
   }
 
+  async isEmailUnique(email: string): Promise<boolean> {
+    const user = await this.userModel.findOne({ email }).exec();
+    return !user; // ✅ Retourne `true` si l'email est unique
+  }
+
   // update deleted to true
   async softDelete(id: string): Promise<User | null> {
     return this.userModel.findByIdAndUpdate(id, { deleted: true }, { new: true });
